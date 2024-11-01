@@ -1,15 +1,25 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-3xl font-bold mb-4"><%= @task.title %></h2>
+  
+  <p class="text-lg mb-2">
+    <strong class="font-medium">คำอธิบาย:</strong> <%= @task.description %>
+  </p>
 
-    <%= render @task %>
+  <p class="text-lg mb-2">
+    <strong class="font-medium">ตำแหน่ง:</strong> <%= @task.position %>
+  </p>
 
-    <%= link_to "Edit this task", edit_task_path(@task), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to tasks", tasks_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this task", @task, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
-    </div>
-  </div>
+  <p class="text-lg mb-2">
+    <strong class="font-medium">Email:</strong> <%= @task.email %>
+  </p>
+
+  <p class="text-lg mb-2">
+    <strong class="font-medium">เวลาที่จะทำ:</strong> <%= @task.todo_time.strftime("%Y-%m-%d %H:%M") if @task.todo_time %>
+  </p>
+
+  <p class="text-lg mb-4">
+    <strong class="font-medium">สถานะ:</strong> <%= @task.completed ? "เสร็จแล้ว" : "ยังไม่เสร็จ" %>
+  </p> 
+
+  <%= link_to 'กลับไปที่รายการ', tasks_path, class: "text-blue-500 hover:underline" %>
 </div>
