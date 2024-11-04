@@ -1,10 +1,22 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :set_task, only: %i[ show edit update destroy toggle ]
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
     @task = Task.new
+    @tasks = case params[:filter]
+             when 'completed'
+               Task.where(completed: true)
+             when 'uncompleted'
+               Task.where(completed: false)
+             else
+               Task.all
+             end
+
+    respond_to do |format|
+      format.html # This renders the normal HTML page
+      format.turbo_stream # This will respond with a Turbo Stream update
+    end
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -23,17 +35,22 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, notice: "Task was successfully created." }
+    @task.completed = false
+  
+    if @task.save
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to tasks_path, notice: "Task was successfully created." }
         format.json { render :show, status: :created, location: @task }
-      else
+      end
+    else
+      respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
-  end
+  end  
+  
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
@@ -53,11 +70,33 @@ class TasksController < ApplicationController
     @task.destroy!
 
     respond_to do |format|
-      format.html { redirect_to tasks_path, status: :see_other, notice: "Task was successfully destroyed." }
+      format.turbo_stream
+      format.html { redirect_to @tasks_path, status: :see_other, notice: "Task was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
+  def toggle
+    @task = Task.find(params[:id])
+    @task.update(completed: !@task.completed)
+    @tasks = case params[:filter]
+              when 'completed'
+                Task.where(completed: true)
+              when 'uncompleted'
+                Task.where(completed: false)
+              else
+                Task.all
+              end
+
+    TaskMaiilerMailer.status_toggle_sent_to_user_email(@task).deliver_later
+    
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to tasks_path(filter: params[:filter]), notice: 'Task updated successfully.' }
+    end
+  end
+
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task

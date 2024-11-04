@@ -1,33 +1,67 @@
-<%= form_with model: @task do |f| %>
-  <div class="mb-4">
-    <%= f.label :title, "Name", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_field :title, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
-  </div>
+<turbo-frame id="new_task_form">
+  <div id="new_task_form">
+    <%= form_with model: task, local: false do |f| %>
+      <!-- Title Field -->
+      <div class="mb-4">
+        <%= f.label :title, "Name", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_field :title, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
+        <% if @task.errors[:title].any? %>
+          <div class="text-red-600 text-sm mt-1"><%= @task.errors[:title].join(", ") %></div>
+        <% end %>
+      </div>
 
-  <div class="mb-4">
-    <%= f.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_area :description, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
-  </div>
+      <!-- Description Field -->
+      <div class="mb-4">
+        <%= f.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :description, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
+        <% if @task.errors[:description].any? %>
+          <div class="text-red-600 text-sm mt-1"><%= @task.errors[:description].join(", ") %></div>
+        <% end %>
+      </div>
 
-  <div class="mb-4">
-    <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_field :email, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
-  </div>
+      <!-- Email Field with Autocomplete -->
+      <div class="mb-4">
+        <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_field :email, 
+            class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500", 
+            autocomplete: "email" %>  <!-- Enable autocomplete for email -->
+        <% if @task.errors[:email].any? %>
+          <div class="text-red-600 text-sm mt-1"><%= @task.errors[:email].join(", ") %></div>
+        <% end %>
+      </div>
 
-  <div class="mb-4">
-    <%= f.label :position, "Position", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_field :position, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
-  </div>
 
-  <div class="mb-4">
-  <%= f.label :todo_time, "Date", class: "block text-sm font-medium text-gray-700" %>
-  <%= f.datetime_field :todo_time, 
-      class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500", 
-      min: Time.current.strftime("%Y-%m-%dT%H:%M"), # Sets the minimum to the current date/time
-      size: 60 %>  <!-- Sets the size of the input field -->
-</div>
+      <!-- Position Selection -->
+      <div class="mb-4 flex flex-wrap md:gap-0 gap-2">
+        <div class="mb-4 w-full md:w-1/2 md:pr-2">
+          <%= f.label :position, "Select Position", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :position, 
+              options_for_select([['Select a position', ''], ['Manager', 'Manager'], ['Developer', 'Developer'], ['Designer', 'Designer']]), 
+              {}, 
+              class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
+          <% if @task.errors[:position].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @task.errors[:position].join(", ") %></div>
+          <% end %>
+        </div>
 
-  <div>
-    <%= f.submit "Save", class: "w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+        <!-- Date and Time Field -->
+        <div class="w-full md:w-1/2 md:pl-2">
+          <%= f.label :todo_time, "Date", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.datetime_field :todo_time, 
+              class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500", 
+              min: Time.current.strftime("%Y-%m-%dT%H:%M"), # Sets the minimum to the current date/time
+              size: 100 %>
+          <p class="mt-2 text-sm text-gray-500">Please select a date and time in the future.</p>
+          <% if @task.errors[:todo_time].any? %>
+            <div class="text-red-600 text-sm mt-1"><%= @task.errors[:todo_time].join(", ") %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <%= f.submit "Save", class: "w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</turbo-frame>

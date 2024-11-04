@@ -1,0 +1,9 @@
+<%= turbo_stream.replace "new_task_form" do %>
+    <div id="new_task_form">
+    <%= render "form", task: Task.new %> 
+    </div> 
+<% end %>
+
+<%= turbo_stream.append "tasks" do %>
+  <%= render @task %>
+<% end %>

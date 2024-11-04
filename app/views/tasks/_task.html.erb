@@ -1,27 +1,32 @@
-<div id="<%= dom_id task %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= task.title %>
-  </p>
+<li id="<%= dom_id(task) %>" class="flex justify-between items-center border-b border-gray-200 py-2 <%= 'completed' if task.completed %>">
+  <div class="flex flex-col w-full items-start gap-2">
+    <div>
+      <div class="mb-4">
+        <%= link_to task_path(task), class: "text-lg font-bold text-blue-500 hover:underline" do %>
+          <strong><%= task.title %></strong>
+        <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= task.description %>
-  </p>
+        <span class="text-2xl <%= task.completed ? 'text-green-500' : 'text-red-500' %>">•</span> 
+      </div>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Completed:</strong>
-    <%= task.completed %>
-  </p>
+      <%= task.todo_time.strftime("%B %d, %Y %I:%M %p") if task.todo_time.present? %>
+      <div><%= task.position %> - <%= task.description %></div>
+    </div>
+    <div class="flex gap-2 w-full justify-end">
+      <div id="task_<%= task.id %>">
+        <%= button_to toggle_task_path(task, filter: params[:filter]), 
+              method: :patch, 
+              remote: true, 
+              class: "flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 min-w-32 text-center items-center js" do %>
+          <span><%= task.completed ? 'Unmark' : 'Complete' %></span>
+        <% end %>
+      </div>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Position:</strong>
-    <%= task.position %>
-  </p>
+      <%= button_to 'ลบ', task_path(task), 
+        method: :delete, 
+        data: { confirm: "คุณแน่ใจไหม?" }, 
+        remote: true, 
+        class: 'pl-4 py-2 text-red-500 hover:underline' %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Todo time:</strong>
-    <%= task.todo_time %>
-  </p>
-
-</div>
+  </div>
+</li>

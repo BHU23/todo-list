@@ -1,0 +1,7 @@
+<%= turbo_stream.update 'tasks' do %>
+  <%= render partial: "task", collection: @tasks, as: :task %>
+<% end %>
+
+<%# <%= turbo_stream.update "task_#{@task.id}" do %> 
+  <%# <%= render partial: "task", locals: { task: @task } %> 
+<%# <% end %> 
