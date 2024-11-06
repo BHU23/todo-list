@@ -1,9 +1,13 @@
 <%= turbo_stream.replace "new_task_form" do %>
-    <div id="new_task_form">
-    <%= render "form", task: Task.new %> 
-    </div> 
+  <%= render "form", task: Task.new %> 
 <% end %>
 
 <%= turbo_stream.append "tasks" do %>
-  <%= render @task %>
+  <%= render @task %> <!-- Assuming you have a partial for each task, e.g., _task.html.erb -->
 <% end %>
+
+<%= turbo_stream.append "flash_notice" do %>
+  <%= render "flash", notice: flash[:notice], status: flash[:status] %>
+<% end %>
+
+<%= turbo_stream.replace "flash_notice" , partial "layouts/flash" , locals: {noticez: "test jaaaa", status: "success" }%>

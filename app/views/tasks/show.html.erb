@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+ <%= turbo_frame_tag 'task_pages' do %>  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
   <h2 class="text-3xl font-bold mb-4"><%= @task.title %></h2>
   
   <p class="text-lg mb-2">
@@ -23,3 +23,4 @@
 
   <%= link_to 'กลับไปที่รายการ', tasks_path, class: "text-blue-500 hover:underline" %>
 </div>
+<% end %>

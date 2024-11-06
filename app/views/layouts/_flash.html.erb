@@ -1,0 +1,6 @@
+<% if notice %>
+  <div data-controller="notification" data-notification-status="<%= status %>" class="fixed top-4 right-4 p-3 rounded shadow-lg bg-<%= status == 'success' ? 'green-500' : 'red-500' %> text-white">
+    <%= notice %>
+    <button class="ml-4 text-white" data-action="click->notification#dismiss">✖</button>
+  </div>
+<% end %>
