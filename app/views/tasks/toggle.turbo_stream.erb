@@ -8,6 +8,7 @@
 
 <%# <%= turbo_stream.append "flash_notice", partial: "layouts/flash" %> 
 
-<%= turbo_stream.append "flash_notice" do %>
+<%= turbo_stream.update "flash_notice" do %>
   <%= render "flash", status: flash[:status], notice: flash[:notice] %>
 <% end %>
+

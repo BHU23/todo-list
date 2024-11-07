@@ -1,11 +1,5 @@
 <%= turbo_stream.remove dom_id(@task) %>
 
-<%= turbo_stream.replace "flash_notice", partial: "layouts/flash" %>
-
-<%= turbo_stream.replace("flash_notice") do %>
-  <%= render "flash", notice: flash[:notice], status: flash[:status] %>
-<% end %>
-
 <%= turbo_stream.replace "flash_notice" do %>
   <%= render "flash", status: flash[:status], notice: flash[:notice] %>
 <% end %>

@@ -6,8 +6,14 @@
   <%= render @task %> <!-- Assuming you have a partial for each task, e.g., _task.html.erb -->
 <% end %>
 
-<%= turbo_stream.append "flash_notice" do %>
-  <%= render "flash", notice: flash[:notice], status: flash[:status] %>
+<%= turbo_stream.update "tasks" do %>
+  <%= render @task %> 
 <% end %>
 
-<%= turbo_stream.replace "flash_notice" , partial "layouts/flash" , locals: {noticez: "test jaaaa", status: "success" }%>
+<%= turbo_stream.append "flash_notice" do %>
+  <%= render "flash", status: flash[:status], notice: flash[:notice] %>
+<% end %>
+
+<%= turbo_stream.append "flash_notice" do %>
+  <%= render "flash", status: flash[:status], notice: flash[:notice] %>
+<% end %>

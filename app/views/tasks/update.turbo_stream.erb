@@ -1,0 +1,14 @@
+<%= turbo_stream.update "task_pages" do %>
+  <%= render "todo" , task: @task%> 
+<% end %>
+<%= turbo_stream.update 'tasks' do %>
+  <%= render @task, task: @task %>
+<% end %>
+
+<%= turbo_stream.append "flash_notice" do %>
+  <%= render "flash", status: flash[:status], notice: flash[:notice] %>
+<% end %>
+
+<%= turbo_stream.append "flash_notice" do %>
+  <%= render "flash", status: flash[:status], notice: flash[:notice] %>
+<% end %>
