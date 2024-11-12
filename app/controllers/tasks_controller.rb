@@ -14,8 +14,8 @@ class TasksController < ApplicationController
              end
 
     respond_to do |format|
-      format.html # This renders the normal HTML page
-      format.turbo_stream # This will respond with a Turbo Stream update
+      format.html 
+      format.turbo_stream 
     end
   end
 
