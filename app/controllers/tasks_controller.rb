@@ -52,9 +52,9 @@ class TasksController < ApplicationController
         format.json { render :show, status: :created, location: @task }
       end
     else
-       flash[:notice] = "There was an error creating the task."
-       flash[:status] = "error"
-        respond_to do |format|
+      flash[:notice] = "There was an error creating the task."
+      flash[:status] = "error"
+      respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
@@ -111,8 +111,9 @@ class TasksController < ApplicationController
       flash[:notice] = "Task updated successfully."
       flash[:status] = "success"
       
-      # Send notification email
-      # TaskMaiilerMailer.status_toggle_sent_to_user_email(@task).deliver_now
+      if @task.completed?
+        TaskMaiilerMailer.status_toggle_sent_to_user_email(Task.first).deliver_later
+      end
     else
       flash[:notice] = "There was an error updating the task."
       flash[:status] = "error"
