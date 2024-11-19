@@ -1,4 +1,5 @@
 class Task < ApplicationRecord
+  has_rich_text :content
   # Validations
   validates :title, presence: true, length: { maximum: 100 } # Title must be present and have a maximum length
   validates :description, presence: true, length: { maximum: 500 } # Description must be present and have a maximum length

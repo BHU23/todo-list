@@ -11,11 +11,20 @@
       </div>
 
       <!-- Description Field -->
-      <div class="mb-4">
+      <div class="field mb-4">
         <%= f.label :description, "Description", class: "block text-sm font-medium text-gray-700" %>
         <%= f.text_area :description, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
         <% if @task.errors[:description].any? %>
           <div class="text-red-600 text-sm mt-1"><%= @task.errors[:description].join(", ") %></div>
+        <% end %>
+      </div>
+
+      <!-- Description Field -->
+      <div class="field mb-4">
+        <%= f.label :content, "Content", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.rich_text_area :content, class: "mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" %>
+        <% if @task.errors[:content].any? %>
+          <div class="text-red-600 text-sm mt-1"><%= @task.errors[:content].join(", ") %></div>
         <% end %>
       </div>
 
@@ -29,7 +38,6 @@
           <div class="text-red-600 text-sm mt-1"><%= @task.errors[:email].join(", ") %></div>
         <% end %>
       </div>
-
 
       <!-- Position Selection -->
       <div class="mb-4 flex flex-wrap md:gap-0 gap-2">
